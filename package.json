@@ -1,0 +1,34 @@
+{
+  "name": "lais-dbs",
+  "version": "1.0.0",
+  "description": "Base de datos del LAIS",
+  "main": "index.js",
+  "scripts": {
+    "serve": "concurrently \"babel index.js -d dist --watch\" \"nodemon dist/index.js\"",
+    "build": "babel index.js -d dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"export NODE_ENV=development\" \"nodemon index.mjs\"",
+    "prod": "concurrently \"export NODE_ENV=production\" \"nodemon index.mjs\""
+  },
+  "keywords": [
+    "database",
+    "mongodb"
+  ],
+  "author": "Rodrigo Colin",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.8",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
