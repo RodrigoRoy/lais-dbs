@@ -27,7 +27,7 @@ export function setEnvironment(app){
  */
 function setDevEnv(app){
   process.env.NODE_ENV = 'development';
-  process.env.DB_URL = `${process.env.MY_DB_HOST}${process.env.MY_DB_NAME_DEV}`; // mongodb://localhost:27017/lais-video-dev
+  process.env.DB_URL = `${process.env.MY_DB_HOST}/${process.env.MY_DB_NAME_DEV}`; // mongodb://localhost:27017/lais-video-dev
   process.env.TOKEN_SECRET = `${process.env.MY_TOKEN_DEV}`;
   app.use(bodyParser.json());
   app.use(morgan('dev'));
@@ -40,7 +40,7 @@ function setDevEnv(app){
  */
 function setProdEnv(app){
   process.env.NODE_ENV = 'production';
-  process.env.DB_URL = `${process.env.MY_DB_HOST}${process.env.MY_DB_NAME_PROD}`
+  process.env.DB_URL = `${process.env.MY_DB_HOST}/${process.env.MY_DB_NAME_PROD}`
   process.env.TOKEN_SECRET = `${process.env.MY_TOKEN_PROD}`;
   app.use(bodyParser.json());
 //   app.use(express.static(__dirname + '/../../dist'));

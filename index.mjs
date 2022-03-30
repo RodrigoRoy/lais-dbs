@@ -5,9 +5,11 @@ const app = express()
 const port = process.env.MY_PORT
 
 import {registerRoutes} from './routes.mjs'
-import {setEnvironment} from './config/env.mjs';
+import {setEnvironment} from './config/env.mjs'
+import {connectToDB} from './config/db.mjs'
 
 setEnvironment(app)
+connectToDB()
 console.log(process.env.NODE_ENV)
 
 app.get("/", (req, res) => res.json({ "message": "hello express" }));

@@ -42,8 +42,9 @@ const videoSchema = new mongoose.Schema({
   },
   controlDescripcion: {
     nombreArchivero: String, //[{type: Schema.Types.ObjectId, ref: 'Usuario'}]
-    fechaDescripcion: new Date().toISOString().substr(0, 10),
-    fechaActualizacion: new Date().toISOString().substr(0, 10),
+    // TODO: @RodrigoRoy Qué ocurre con la definición de fechas?
+    // fechaDescripcion: new Date().toISOString().substring(0, 10),
+    // fechaActualizacion: new Date().toISOString().substring(0, 10),
   },
   adicional: {
     imagen: String,
