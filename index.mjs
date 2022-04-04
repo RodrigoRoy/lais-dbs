@@ -10,6 +10,7 @@ import {connectToDB} from './config/db.mjs'
 
 setEnvironment(app)
 connectToDB()
+registerRoutes(app)
 console.log(process.env.NODE_ENV)
 
 app.get("/", (req, res) => res.json({ "message": "hello express" }));
