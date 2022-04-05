@@ -1,6 +1,18 @@
+/**
+ * Controlador para registro de usuarios (sign in)
+ * @module api/register/register-controller
+ */
+
 import * as StringUtil from '../../utilities/string-util.mjs';
 import User from '../../model/user-model.mjs';
 
+/**
+ * Registro de nuevo usuario
+ * @see model/user-model
+ * @param {Object} req - Petición (request) recibida por http con los datos necesarios
+ * @param {Object} res - Respuesta (response) a enviar por http
+ * @returns JSON con mensaje en caso éxitoso de la creación de usuario o mensaje de error
+ */
 export function index(req, res){
     const validation = validateIndex(req.body);
     if(!validation.isValid){
@@ -27,6 +39,13 @@ export function index(req, res){
     });
 }
 
+/**
+ * Verifica que los valores del cuerpo de la petición no sean vacios
+ * @see model/user-model
+ * @param {Object} body - Cuerpo de la petición por http (req.body)
+ * @returns Objeto con propiedad booleana isValid que indica si los valores requeridos no son vacios.
+ * Adicionalmente la propiedad message indica con texto los posibles errores.
+ */
 function validateIndex(body){
     let errors = '';
     // TODO: Validaciones para el resto de campos (admin, operation, active)

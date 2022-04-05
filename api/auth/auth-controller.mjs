@@ -1,7 +1,18 @@
+/**
+ * Acciones de autentificación relacionadas a usuarios en base de datos
+ * @module api/auth/auth-controller
+ */
+
 import * as StringUtil from '../../utilities/string-util.mjs'
 import User from '../../model/user-model.mjs'
 import { generateJWT } from '../../services/auth-service.mjs'
 
+/**
+ * Valida si el username y password son válidos
+ * @param {Object} req - Petición (request) recibida por http que incluye username y password
+ * @param {Object} res - Respuesta (response) a enviar por http
+ * @returns JSON con token en formato JWT de los valores principales del usuario o mensaje de error
+ */
 export function index(req, res){
     const validation = validateIndex(req.body);
     if(!validation.isValid){
@@ -24,6 +35,12 @@ export function index(req, res){
     });
 }
 
+/**
+ * Verifica que los valores del cuerpo de la petición no sean vacios (username y password)
+ * @param {Object} body - Cuerpo de la petición por http (req.body)
+ * @returns Objeto con propiedad booleana isValid que indica si los valores requeridos no son vacios.
+ * Adicionalmente la propiedad message indica con texto los posibles errores.
+ */
 function validateIndex(body){
     let errors = '';
     if(StringUtil.isEmpty(body.username)){
