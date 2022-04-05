@@ -7,10 +7,9 @@ const router = express.Router();
 import * as controller from './user-controller.mjs'
 
 router.get('/user', controller.index);
-// TODO @RodrigoRoy
-// /user/:id GET
-// /user/:id PUT
-// /user/:id DELETE
+router.get('/user/:id', controller.show);
+router.put('/user', controller.update);
+router.delete('/user/:id', controller.remove);
 
 /**
  * Registra todas las rutas para consulta usuarios usando el prefijo "/user"

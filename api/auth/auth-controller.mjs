@@ -20,9 +20,9 @@ export function index(req, res){
         return res.status(400).json({message: validation.message});
     }
 
-    // TODO Explicitar petición de contraseña en función findOne
-    User.findOne({username: req.body.username}, {password: true}, (error, user) => {
-        console.log('Datos de usuario: ', user);
+    User.findOne({username: req.body.username})
+    .select('+password') // Incluir campo excluido por default, sin hacer que la proyección sea inclusiva
+    .exec((error, user) => {
         if(error){
             return res.status(500).json({message: error});
         }
