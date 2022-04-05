@@ -8,7 +8,9 @@
     "build": "babel index.js -d dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"export NODE_ENV=development\" \"nodemon index.mjs\"",
-    "prod": "concurrently \"export NODE_ENV=production\" \"nodemon index.mjs\""
+    "prod": "concurrently \"export NODE_ENV=production\" \"nodemon index.mjs\"",
+    "dev-wind": "concurrently \"set NODE_ENV=development\" \"nodemon index.mjs\"",
+    "prod-wind": "concurrently \"set NODE_ENV=production\" \"nodemon index.mjs\""
   },
   "keywords": [
     "database",
