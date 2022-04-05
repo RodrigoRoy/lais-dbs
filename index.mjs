@@ -10,9 +10,10 @@ import {connectToDB} from './config/db.mjs'
 
 setEnvironment(app)
 connectToDB()
-registerRoutes(app);
-console.log(process.env.NODE_ENV)
+registerRoutes(app)
 
-app.get("/", (req, res) => res.json({ "message": "hello express" }));
+console.log(`Ejecutando ambiente: ${process.env.NODE_ENV}`)
 
-app.listen(process.env.MY_PORT, () => console.log("Hello ESM with esm !!"));
+app.get("/", (req, res) => res.json({ "message": "hello express" }))
+
+app.listen(process.env.MY_PORT, () => console.log("Hello ESM with esm !!"))

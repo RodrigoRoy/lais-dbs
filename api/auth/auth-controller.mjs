@@ -14,24 +14,28 @@ import { generateJWT } from '../../services/auth-service.mjs'
  * @returns JSON con token en formato JWT de los valores principales del usuario o mensaje de error
  */
 export function index(req, res){
+    // Verificación de datos no-vacios en petición (req.body)
     const validation = validateIndex(req.body);
     if(!validation.isValid){
         return res.status(400).json({message: validation.message});
     }
-    User.findOne({username: req.body.username.toLowerCase()}, (error, user) => {
+
+    // TODO Explicitar petición de contraseña en función findOne
+    User.findOne({username: req.body.username}, {password: true}, (error, user) => {
+        console.log('Datos de usuario: ', user);
         if(error){
-            return res.status(500).json();
+            return res.status(500).json({message: error});
         }
         if(!user){
-            return res.status(401).json();
+            return res.status(401).json({message: 'El usuario no existe'});
         }
         
         const passwordMatch = User.passwordMatches(req.body.password, user.password);
         if(!passwordMatch){
-            return res.status(401).json();
+            return res.status(401).json({message: 'Contraseña incorrecta'});
         }
         const token = generateJWT(user);
-        return res.status(200).json({token: token});
+        return res.status(200).json({token: token, message: 'Autentificación correcta'});
     });
 }
 
@@ -50,7 +54,7 @@ function validateIndex(body){
         errors += 'Password is required. ';
     }
     
-    return{
+    return {
         isValid: StringUtil.isEmpty(errors),
         message: errors
     }

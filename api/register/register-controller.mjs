@@ -14,6 +14,7 @@ import User from '../../model/user-model.mjs';
  * @returns JSON con mensaje en caso éxitoso de la creación de usuario o mensaje de error
  */
 export function index(req, res){
+    // Verificación de datos no-vacios en petición (req.body)
     const validation = validateIndex(req.body);
     if(!validation.isValid){
         return res.status(400).json({message: validation.message});
@@ -31,11 +32,11 @@ export function index(req, res){
     user.save(error => {
         if(error){
             if(error.code === 11000){
-                return res.status(403).json({message: 'Username is already taken'});
+                return res.status(403).json({message: 'Nombre de usuario ya en uso'});
             }
-            return res.status(500).json();
+            return res.status(500).json({message: err});
         }
-        return res.status(201).json();
+        return res.status(201).json({message: 'Usuario creado exitosamente'});
     });
 }
 

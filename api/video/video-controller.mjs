@@ -2,6 +2,10 @@ import Video from '../../model/video-model.mjs';
 // import moment from 'moment';
 // import * as auth from '../../services/auth-service';
 
+// @EmmanuelCruz TODO: Explicitar mensajes de error, por ejemplo: res.json({message: error})
+// y mensajes exitosos, por ejemplo: res.json({message: 'Operación exitosa'})
+// Traducir mensajes de res y documentación al español
+
 export function index(req, res){
   // Find all videos
   Video.find({}, (error, videos) => {

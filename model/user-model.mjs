@@ -1,3 +1,8 @@
+/**
+ * Definición (esquema) de un usuario del sistema
+ * @module model/user-model
+ */
+
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
@@ -17,16 +22,29 @@ const userSchema = new mongoose.Schema({
     active: {type: Boolean, default: true}
 });
 
-userSchema.set('timestamps', true);
+userSchema.set('timestamps', true); // Habilita propiedadaes: createdAt, updatedAt
 
+/**
+ * Compara la contraseña sin encryptar con su versión encriptada en la base de datos
+ * @param {string} password - Contraseña sin encriptar (recibida por http)
+ * @param {string} hash - Contraseña encriptada (almacenada en base de datos)
+ * @returns True si las contraseñas son equivalentes, false en otro caso
+ */
 userSchema.statics.passwordMatches = function(password, hash){
     return bcrypt.compareSync(password, hash)
 };
+
+/**
+ * Acciones a realizar previo al guardado en base de datos
+ * En este caso, se encripta la contraseña
+ */
 userSchema.pre('save', function(next){
-    // this.username = this.username.toLowerCase();
     const unsafePassword = this.password;
     this.password = bcrypt.hashSync(unsafePassword);
     next();
 });
 
+/**
+ * Generación del modelo de usuario a partir del esquema 
+ */
 export default mongoose.model('user', userSchema);

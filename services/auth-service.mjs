@@ -1,7 +1,13 @@
+// TODO Documentar @EmmanuelCruz
 import jwt from 'jsonwebtoken'
 
 export function generateJWT(user){
-    const tokenData = {username: user.username, id: user._id};
+    const tokenData = {
+        username: user.username, 
+        operation: user.operation, 
+        admin: user.admin, 
+        id: user._id
+    };
     return jwt.sign({user: tokenData}, process.env.MY_TOKEN);
 }
 
@@ -41,4 +47,13 @@ export function getUserId(req){
         return null;
     }
     return token.user.id;
+}
+
+// TODO @EmmanuelCruz implementar obtención de permisos de usuario @see model/user-model
+export function getUserOperation(req){
+    return null;
+}
+
+export function getUserAdmin(req){
+    return null;
 }
