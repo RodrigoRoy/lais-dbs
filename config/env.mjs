@@ -6,7 +6,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 // TODO@EmmanuelCruz
-// Verificar la exportación de variables de entorno (export NODE_ENV=production)
+// Verificar la exportación de variables de entorno (export NODE_ENV=production) @RodrigoRoy sucede
+// el mismo problema que se presentó en Linux
 
 /**
  * Establece el ambiente de desarrollo: production, development
