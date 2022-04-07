@@ -15,7 +15,7 @@ export function index(req, res){
     .exec((err, usuarios) => {
         if(err)
             return res.status(500).json({message: err});
-        return res.json({usuarios: usuarios});
+        return res.status(200).json({usuarios: usuarios});
     });
 }
 
@@ -26,12 +26,13 @@ export function index(req, res){
  * @returns Objeto con todas las propiedas del usuario
  */
 export function show(req, res){
+    // TODO @RodrigoRoy Solamente usuarios con permisos suficientes pueden editar
     Usuario.findOne({_id: req.params.id}, (error, usuario) => {
         if(error)
             return res.status(500).json({message: error})
         if(!usuario)
             return res.status(400).json({message: 'El usuario no existe'})
-        return res.status(200).json(usuario)
+        return res.status(200).json({usuario: usuario, message: 'Usuario obtenido correctamente'})
     })
 }
 
@@ -45,8 +46,9 @@ export function update(req, res){
     // TODO: @RodrigoRoy Solamente usuarios con permisos suficientes pueden editar
     const usuario = new Usuario(req.body.usuario);
     
-    // TODO @RodrigoRoy Cambiar JSON "usuario" por objeto UpdateQuery
-    Usuario.findByIdAndUpdate({_id: usuario._id}, usuario, error => {
+    // findByIdAndUpdate() requiere que el segundo parámetro sea un UpdateQuery (incluye $set). Alternativamente usar opción "overwrite"
+    // Video.findOneAndReplace({_id: video._id}, video, error => {
+    Usuario.findByIdAndUpdate({_id: usuario._id}, usuario, {overwrite: true}, error => {
         if(error)
             return res.status(500).json({message: error})
         return res.status(200).json({message: 'Usuario actualizado correctamente'})

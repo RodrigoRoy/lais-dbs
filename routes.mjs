@@ -18,4 +18,5 @@ export function registerRoutes(app){
   app.use('/api', regRoutes);
   app.use('/api', userRoutes);
   app.use('/api', videoRoutes);
+  app.use('/api', coleccionRoutes);
 }

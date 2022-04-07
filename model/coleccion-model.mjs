@@ -38,8 +38,9 @@ const coleccionSchema = new mongoose.Schema({
     // fechaActualizacion: updatedAt
   },
   adicional: {
-    imagen: String,
-    isPublic: {type: Boolean, default: true}
+    imagen: {type: String, trim: true},
+    presentacion: {type: String, trim: true},
+    isPublic: {type: Boolean, default: true},
   }
 },{
   collection: 'coleccionVideo',

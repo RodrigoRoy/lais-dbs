@@ -1,19 +1,22 @@
-import 'dotenv/config'
+/**
+ * Servidor web programado con express
+ */
 
+import 'dotenv/config' // variables de ambiente @see archivo .env
 import express from 'express'
 const app = express()
-const port = process.env.MY_PORT
+const port = process.env.MY_PORT // puerto a usar
 
 import {registerRoutes} from './routes.mjs'
 import {setEnvironment} from './config/env.mjs'
 import {connectToDB} from './config/db.mjs'
 
-setEnvironment(app)
-connectToDB()
-registerRoutes(app)
+setEnvironment(app) // establecer ambiente de desarrollo o producción
+connectToDB() // conexión con base de datos
+registerRoutes(app) // registro de rutas http del API
 
 console.log(`Ejecutando ambiente: ${process.env.NODE_ENV}`)
 
-app.get("/", (req, res) => res.json({ "message": "hello express" }))
-
-app.listen(process.env.MY_PORT, () => console.log("Hello ESM with esm !!"))
+// Inicialización:
+app.get("/", (req, res) => res.json({ "message": "Usar ruta /api y consultar routes.mjs" }))
+app.listen(process.env.MY_PORT, () => console.log("Servidor en espera de peticiones"))

@@ -20,27 +20,37 @@ export function index(req, res){
 }
 
 /**
- * Crea un nuevo video.
+ * Crea un nuevo video. Se asume que la información en petición es correcta
  * @param {Object} req - Petición (request) recibida por http que incluye toda la información necesaria de un video.
  * @param {Object} res - Respuesta (response) a enviar por http
  * @returns JSON con el id del nuevo video creado.
  */
 export function create(req, res){
+  // TODO @RodrigoRoy Incluir ID de usuario a video
   // Create video
-//   const id = auth.getUserId(req);
-  Video.findOne({_id: id}, (error, user) => {
-    if(error && !user){
+  // const id = auth.getUserId(req);
+  // Video.findOne({_id: id}, (error, user) => {
+  //   if(error && !user){
+  //     return res.status(500).json({message: error});
+  //   }
+  //   const video = new Video(req.body.video);
+  //   video.author = user._id;
+
+  //   video.save(error => {
+  //     if(error){
+  //       return res.status(500).json({message: error});
+  //     }
+  //     return res.status(201).json({id: video._id, message: "Se ha creado el video exitosamente"});
+  //   });
+  // });
+
+  const video = new Video(req.body.video);
+
+  video.save(error => {
+    if(error){
       return res.status(500).json({message: error});
     }
-    const video = new Video(req.body.video);
-    // video.author = user._id;
-
-    video.save(error => {
-      if(error){
-        return res.status(500).json({message: error});
-      }
-      return res.status(201).json({id: video._id, message: "Se ha creado el video exitosamente"});
-    });
+    return res.status(201).json({id: video._id, message: `Registro ${video.identificacion.codigoReferencia} creado`});
   });
 }
 
@@ -51,25 +61,38 @@ export function create(req, res){
  * @returns JSON con un mensaje de error éxito.
  */
 export function update(req, res){
+  // TODO @RodrigoRoy Verificación de usuario al borrar
   // Update a video
-//   const id = auth.getUserId(req);
+  // const id = auth.getUserId(req);
+  // User.findOne({_id: id}, (error, user) => {
+  //   if(error){
+  //     return res.status(500).json({message: error});
+  //   }
+  //   if(!user){
+  //     return res.status(404).json({message: "No se encontró el video en la base"});
+  //   }
 
-  User.findOne({_id: id}, (error, user) => {
+  //   const video = new Video(req.body.video);
+  //   video.author = user._id;
+  //   Video.findByIdAndUpdate({_id: video._id}, video, error => {
+  //     if(error){
+  //       return res.status(500).json({message: error});
+  //     }
+  //     return res.status(200).json();
+  //   });
+  // });
+
+  const video = new Video(req.body.video);
+  // findByIdAndUpdate() requiere que el  segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
+  // Video.findOneAndReplace({_id: video._id}, video, error => {
+  Video.findByIdAndUpdate({_id: video._id}, video, {overwrite: true}, error => {
     if(error){
-      return res.status(500).json({message: error});
+      return res.status(500).json({message: error})
     }
-    if(!user){
-      return res.status(404).json({message: "No se encontró el video en la base"});
+    if(!video._id || !video.identificacion.codigoReferencia){
+      return res.status(400).json({message: 'Registro de video vacio. Verificar propiedades \'video\', \'video._id\', \'video.identificacion.codigoReferencia\''});
     }
-
-    const video = new Video(req.body.video);
-    // video.author = user._id;
-    Video.findByIdAndUpdate({_id: video._id}, video, error => {
-      if(error){
-        return res.status(500).json({message: error});
-      }
-      return res.status(204).json({message: "Se ha actualizado el video"});
-    });
+    return res.status(200).json({message: `Registro ${video.identificacion.codigoReferencia} actualizado`})
   });
 }
 
@@ -80,6 +103,7 @@ export function update(req, res){
  * @returns JSON con un mensaje de error o éxito de eliminación.
  */
 export function remove(req, res){
+  // TODO @RodrigoRoy Verificar usuario al borrar
   // Delete a video
 //   const id = auth.getUserId(req);
   Video.findOne({_id: req.params.id}, (error, video) => {
@@ -96,7 +120,7 @@ export function remove(req, res){
       if(error){
         return res.status(500).json({message: error});
       }
-      return res.status(204).json({message: "El video se ha eliminado correctamente"});
+      return res.status(200).json({message: `Registro ${video.identificacion.codigoReferencia} borrado`});
     });
   });
 }
@@ -116,6 +140,6 @@ export function show(req, res){
     if(!video){
       return res.status(400).json({message: error});
     }
-    return res.status(200).json({video: video, message: "Recuperado exitosamente"});
+    return res.status(200).json({video: video, message: "Registro obtenido correctamente"});
   })
 }
