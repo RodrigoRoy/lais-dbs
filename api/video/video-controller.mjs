@@ -85,12 +85,15 @@ export function update(req, res){
   const video = new Video(req.body.video);
   // findByIdAndUpdate() requiere que el  segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
   // Video.findOneAndReplace({_id: video._id}, video, error => {
-  Video.findByIdAndUpdate({_id: video._id}, video, {overwrite: true}, error => {
+  Video.findByIdAndUpdate({_id: video._id}, video, {overwrite: true}, (error, document) => {
     if(error){
       return res.status(500).json({message: error})
     }
-    if(!video._id || !video.identificacion.codigoReferencia){
+    if(!video.identificacion.codigoReferencia){
       return res.status(400).json({message: 'Registro de video vacio. Verificar propiedades \'video\', \'video._id\', \'video.identificacion.codigoReferencia\''});
+    }
+    if(!document){
+      return res.status(400).json({message: `El registro con id ${grupo._id} no existe`});
     }
     return res.status(200).json({message: `Registro ${video.identificacion.codigoReferencia} actualizado`})
   });
@@ -103,25 +106,32 @@ export function update(req, res){
  * @returns JSON con un mensaje de error o éxito de eliminación.
  */
 export function remove(req, res){
-  // TODO @RodrigoRoy Verificar usuario al borrar
-  // Delete a video
-//   const id = auth.getUserId(req);
-  Video.findOne({_id: req.params.id}, (error, video) => {
+  // const id = auth.getUserId(req);
+  // Video.findOne({_id: req.params.id}, (error, video) => {
+  //   if(error){
+  //     return res.status(500).json({message: error});
+  //   }
+  //   if(!video){
+  //     return res.status(404).json({message: error});
+  //   }
+  //   if(video.author._id.toString() !== id){
+  //     return res.status(403).json({message: 'Not allowed to delete another user\'s video'});
+  //   }
+  //   Video.deleteOne({_id: req.params.id}, error => {
+  //     if(error){
+  //       return res.status(500).json({message: error});
+  //     }
+  //     return res.status(200).json({message: `Registro ${video.identificacion.codigoReferencia} borrado`});
+  //   });
+  // });
+  Video.findByIdAndDelete({_id: req.params.id}, (error, video) => {
     if(error){
       return res.status(500).json({message: error});
     }
     if(!video){
-      return res.status(404).json({message: error});
+      return res.status(400).json({message: `El registro con id ${req.params.id} no existe`});
     }
-    // if(video.author._id.toString() !== id){
-    //   return res.status(403).json({message: 'Not allowed to delete another user\'s video'});
-    // }
-    Video.deleteOne({_id: req.params.id}, error => {
-      if(error){
-        return res.status(500).json({message: error});
-      }
-      return res.status(200).json({message: `Registro ${video.identificacion.codigoReferencia} borrado`});
-    });
+    return res.status(200).json({message: `Registro ${video.identificacion.codigoReferencia} borrado`});
   });
 }
 

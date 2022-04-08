@@ -9,10 +9,9 @@ import Coleccion from '../../model/coleccion-model.mjs';
  * @returns JSON con un listado de todas las colecciones en la base de datos.
  */
 export function index(req, res){
-  // Find all collections
   Coleccion.find({}, (error, colecciones) => {
     if(error){
-      return res.status(500).json();
+      return res.status(500).json({message: error});
     }
     return res.status(200).json({colecciones: colecciones});
   })
@@ -24,7 +23,7 @@ export function index(req, res){
  * @param {Object} req - Petición (request) recibida por http que incluye toda la información necesaria 
  * de una colección.
  * @param {Object} res - Respuesta (response) a enviar por http
- * @returns JSON con el id de la nueva colección creada.
+ * @returns JSON con el id de la nueva colección
  */
 export function create(req, res){
   // TODO @RodrigoRoy Verificar permisos de usuario y agregar autoria de usuario
@@ -59,7 +58,7 @@ export function create(req, res){
  * @param {Object} req - Petición (request) recibida por http que incluye la nueva información a 
  * actualizar.
  * @param {Object} res - Respuesta (response) a enviar por http
- * @returns JSON con un mensaje de error éxito.
+ * @returns JSON con un mensaje de error o éxito
  */
 export function update(req, res){
   // TODO @RodrigoRoy Verificar permisos y agregar id de autoria de usuario
@@ -87,18 +86,16 @@ export function update(req, res){
   const coleccion = new Coleccion(req.body.coleccion);
   // findByIdAndUpdate() requiere que el  segundo parámetro incluya $set. Alternativamente usar opción "overwrite"
   // Coleccion.findOneAndReplace({_id: coleccion._id}, coleccion, error => {
-  Coleccion.findByIdAndUpdate({_id: coleccion._id}, coleccion, {overwrite: true}, error => {
+  Coleccion.findByIdAndUpdate({_id: coleccion._id}, coleccion, {overwrite: true}, (error, document) => {
     console.log("Colección _id?: ", coleccion);
     if(error){
       return res.status(500).json({message: error})
     }
-    // TODO: No funciona porque siempre se genera un ID
-    // TODO: @RodrigoRoy Investigar si find encuentra registro. Hacer cambio también en model/video-controller
-    if(!coleccion){
-      return res.status(400).json({message: 'Registro vacio'});
-    }
-    if(!coleccion._id || !coleccion.identificacion.codigoReferencia){
+    if(!coleccion.identificacion.codigoReferencia){
       return res.status(400).json({message: 'Registro de colección vacio. Verificar propiedades \'coleccion\', \'coleccion._id\', \'coleccion.identificacion.codigoReferencia\''});
+    }
+    if(!document){
+      return res.status(400).json({message: `El registro con id ${grupo._id} no existe`});
     }
     return res.status(200).json({message: `Registro ${coleccion.identificacion.codigoReferencia} actualizado`})
   });
@@ -108,28 +105,35 @@ export function update(req, res){
  * Elimina una colección de la base de datos.
  * @param {Object} req - Petición (request) recibida por http que incluye el id de la colección a eliminar
  * @param {Object} res - Respuesta (response) a enviar por http
- * @returns JSON con un mensaje de error o éxito de eliminación.
+ * @returns JSON con un mensaje de error o éxito de eliminación
  */
 export function remove(req, res){
-  // TODO @RodrigoRoy verificar si existe funcion findOneAndDelete o su equivalente
-  // Delete a coleccion
-  //   const id = auth.getUserId(req);
-  Coleccion.findOne({_id: req.params.id}, (error, coleccion) => {
+  // const id = auth.getUserId(req);
+  // Coleccion.findOne({_id: req.params.id}, (error, coleccion) => {
+  //   if(error){
+  //     return res.status(500).json({message: error});
+  //   }
+  //   if(!coleccion){
+  //     return res.status(404).json({message: `No hay registro de la colección con id ${req.params.id}`});
+  //   }
+  //   if(coleccion.author._id.toString() !== id){
+  //     return res.status(403).json({message: 'Not allowed to delete another user\'s coleccion'});
+  //   }
+  //   Coleccion.deleteOne({_id: req.params.id}, error => {
+  //     if(error){
+  //       return res.status(500).json({message: error});
+  //     }
+  //     return res.status(200).json({message: `Registro ${coleccion.identificacion.codigoReferencia} borrado`});
+  //   });
+  // });
+  Coleccion.findByIdAndDelete({_id: req.params.id}, (error, coleccion) => {
     if(error){
       return res.status(500).json({message: error});
     }
     if(!coleccion){
-      return res.status(404).json({message: `No hay registro de la colección con id ${req.params.id}`});
+      return res.status(400).json({message: `El registro con id ${req.params.id} no existe`});
     }
-    // if(coleccion.author._id.toString() !== id){
-    //   return res.status(403).json({message: 'Not allowed to delete another user\'s coleccion'});
-    // }
-    Coleccion.deleteOne({_id: req.params.id}, error => {
-      if(error){
-        return res.status(500).json({message: error});
-      }
-      return res.status(200).json({message: `Registro ${coleccion.identificacion.codigoReferencia} borrado`});
-    });
+    return res.status(200).json({message: `Registro ${coleccion.identificacion.codigoReferencia} borrado`});
   });
 }
 
@@ -141,13 +145,12 @@ export function remove(req, res){
  * @returns JSON con toda la información de la colección.
  */
 export function show(req, res){
-  // Get coleccion from id
   Coleccion.findOne({_id: req.params.id}, (error, coleccion) => {
     if(error){
-      return res.status(500).json();
+      return res.status(500).json({message: error});
     }
     if(!coleccion){
-      return res.status(400).json();
+      return res.status(400).json({message: `No hay registro de la colección con id ${req.params.id}`});
     }
     return res.status(200).json({coleccion: coleccion, message: 'Registro obtenido correctamente'});
   })

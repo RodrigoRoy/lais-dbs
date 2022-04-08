@@ -48,9 +48,16 @@ export function update(req, res){
     
     // findByIdAndUpdate() requiere que el segundo parámetro sea un UpdateQuery (incluye $set). Alternativamente usar opción "overwrite"
     // Video.findOneAndReplace({_id: video._id}, video, error => {
-    Usuario.findByIdAndUpdate({_id: usuario._id}, usuario, {overwrite: true}, error => {
-        if(error)
+    Usuario.findByIdAndUpdate({_id: usuario._id}, usuario, {overwrite: true}, (error, document) => {
+        if(error){
             return res.status(500).json({message: error})
+        }
+        if(!usuario.username){
+            return res.status(400).json({message: 'Registro de usuario vacio. Verificar propiedades \'usuario\', \'usuario._id\', \'usuario.username\''});
+        }
+        if(!document){
+            return res.status(400).json({message: `El registro con id ${usuario._id} no existe`});
+        }
         return res.status(200).json({message: 'Usuario actualizado correctamente'})
     })
 }
@@ -63,9 +70,13 @@ export function update(req, res){
  */
 export function remove(req, res){
     // TODO @RodrigoRoy Solamente usuarios con permisos suficientes pueden borrar
-    Usuario.deleteOne({_id: req.params.id}, error => {
-        if(error)
-            return res.status(500).json({message: error})
-        return res.status(200).json({message: 'Usuario borrado correctamente'})
-    })
+    Usuario.findByIdAndDelete({_id: req.params.id}, (error, usuario) => {
+        if(error){
+            return res.status(500).json({message: error});
+        }
+        if(!usuario){
+            return res.status(400).json({message: `El registro con id ${req.params.id} no existe`});
+        }
+        return res.status(200).json({message: `Usuario ${usuario.username} borrado`});
+    });
 }

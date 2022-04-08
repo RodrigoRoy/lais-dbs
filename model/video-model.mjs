@@ -52,7 +52,7 @@ const videoSchema = new mongoose.Schema({
     isPublic: {type: Boolean, default: true}
   }
 },{
-  collection: 'unidadDocumental',
+  collection: 'unidadDocumentalVideo',
   timestamps: true, //timestamps: {createdAt: 'creacion', updatedAt: 'actualizacion'}
 	// toObject: {virtuals: true},
 	// toJSON: {virtuals: true}
