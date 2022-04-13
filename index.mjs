@@ -2,7 +2,7 @@
  * Servidor web programado con express
  */
 
-import 'dotenv/config' // variables de ambiente @see archivo .env
+import 'dotenv/config' // variables de ambiente @see .env
 import express from 'express'
 const app = express()
 const port = process.env.MY_PORT // puerto a usar
@@ -19,4 +19,4 @@ console.log(`Ejecutando ambiente: ${process.env.NODE_ENV}`)
 
 // Inicialización:
 app.get("/", (req, res) => res.json({ "message": "Usar ruta /api y consultar routes.mjs" }))
-app.listen(process.env.MY_PORT, () => console.log("Servidor en espera de peticiones"))
+app.listen(port, () => console.log(`Servidor en espera de peticiones:\n  http://${process.env.MY_HOST}:${port}/`))
