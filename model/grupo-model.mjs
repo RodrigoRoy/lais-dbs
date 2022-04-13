@@ -42,4 +42,4 @@ const grupoSchema = new mongoose.Schema({
   // toJSON: {virtuals: true}
 });
 
-export default mongoose.model('grupo', grupoSchema);
+export default mongoose.model('grupoVideo', grupoSchema);

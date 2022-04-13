@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const ObjectId = mongoose.Schema.Types.ObjectId; // Datatype para referencias a otros esquemas
 
 const videoSchema = new mongoose.Schema({
   identificacion: {
@@ -7,7 +8,7 @@ const videoSchema = new mongoose.Schema({
     lugar: {type: String, trim: true},
     pais: {type: String, trim: true},
     duracion: Number, // representado en total de segundos
-    duracionString: {type: String, trim: true}, // representado en total de segundos
+    duracionString: {type: String, trim: true}, // representado textual
     personasEntrevistadas: {type: [String], trim: true},
     entrevistador: {type: String, trim: true},
     camara: {type: String, trim: true},
@@ -41,7 +42,7 @@ const videoSchema = new mongoose.Schema({
     notas: {type: String, trim: true},
   },
   controlDescripcion: {
-    nombreArchivero: {type: String, trim: true}, //[{type: Schema.Types.ObjectId, ref: 'Usuario'}]
+    nombreArchivero: {type: String, trim: true}, //[{type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'}]
     // fechaDescripcion: new Date().toISOString().substring(0, 10),
     // fechaActualizacion: new Date().toISOString().substring(0, 10),
   },
@@ -49,7 +50,19 @@ const videoSchema = new mongoose.Schema({
     imagen: {type: String, trim: true},
     video: {type: String, trim: true},
     calificacion: {type: String, trim: true},
-    isPublic: {type: Boolean, default: true}
+    isPublic: {type: Boolean, default: true},
+    user: [{type: ObjectId, ref: 'user'}],
+    grupo: {type: ObjectId, ref: 'grupoVideo'},
+    lugarDescrito: {
+      location: {
+        lat: {type: Number},
+        lng: {type: Number},
+        _id: false
+      },
+      // placeId: {type: String},
+      // formattedAddress: {type: String},
+      _id: false
+    }
   }
 },{
   collection: 'unidadDocumentalVideo',

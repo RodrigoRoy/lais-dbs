@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
     fullname: {type: String, maxlength: 50, trim: true, required: true},
     email: {type: String, required: true, index: {unique: true}},
     password: {type: String, required: true, select: false},
-    admin: {type: Boolean, default: false},
     operation: {
         create: {type: Boolean, default: true},
         read: {type: Boolean, default: true},
@@ -19,14 +18,16 @@ const userSchema = new mongoose.Schema({
         delete: {type: Boolean, default: false},
         _id: false
     },
+    admin: {type: Boolean, default: false},
     active: {type: Boolean, default: true}
 });
 
 userSchema.set('timestamps', true); // Habilita propiedadaes: createdAt, updatedAt
+userSchema.set('collection', 'usuarios'); // Nombre de la colección en la base de datos
 
 /**
- * Compara la contraseña sin encryptar con su versión encriptada en la base de datos
- * @param {string} password - Contraseña sin encriptar (recibida por http)
+ * Compara la contraseña no-encriptada con su versión encriptada en la base de datos
+ * @param {string} password - Contraseña no-encriptada (recibida por http)
  * @param {string} hash - Contraseña encriptada (almacenada en base de datos)
  * @returns True si las contraseñas son equivalentes, false en otro caso
  */

@@ -43,10 +43,10 @@ const coleccionSchema = new mongoose.Schema({
     isPublic: {type: Boolean, default: true},
   }
 },{
-  collection: 'coleccionVideo',
+  collection: 'coleccionDocumentalVideo',
   timestamps: true, //timestamps: {createdAt: 'creacion', updatedAt: 'actualizacion'}
   // toObject: {virtuals: true},
   // toJSON: {virtuals: true}
 });
 
-export default mongoose.model('coleccion', coleccionSchema);
+export default mongoose.model('coleccionVideo', coleccionSchema);
