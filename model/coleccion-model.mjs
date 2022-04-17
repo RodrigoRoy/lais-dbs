@@ -4,7 +4,7 @@ const coleccionSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: {type: String, required: true, trim: true, index: {unique: true}},
     titulo: {type: String, trim: true},
-    pais: {type: String, trim: true},
+    // pais: {type: String, trim: true}, // autogenerado?
     fecha: Date,
     nivelDescripcion: {type: String, enum: ['Colección', 'Grupo', 'Subgrupo', 'Serie', 'Subserie'], default: 'Colección'},
     // volumenSoporte: String,
