@@ -49,7 +49,7 @@ export function create(req, res){
     if(error){
       return res.status(500).json({message: error});
     }
-    return res.status(201).json({message: `Registro ${coleccion.identificacion.codigoReferencia} creado`});
+    return res.status(201).json({id: coleccion._id, message: `Registro ${coleccion.identificacion.codigoReferencia} creado`});
   });
 }
 
