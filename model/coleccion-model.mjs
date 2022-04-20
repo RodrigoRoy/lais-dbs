@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const ObjectId = mongoose.Schema.Types.ObjectId; // Datatype para referencias a otros esquemas
 
 const coleccionSchema = new mongoose.Schema({
   identificacion: {
@@ -41,6 +42,7 @@ const coleccionSchema = new mongoose.Schema({
     imagen: {type: String, trim: true},
     presentacion: {type: String, trim: true},
     isPublic: {type: Boolean, default: true},
+    coleccion: {type: ObjectId, ref: 'coleccionVideo'}
   }
 },{
   collection: 'coleccionDocumentalVideo',

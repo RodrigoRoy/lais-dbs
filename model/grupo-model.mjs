@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
+const ObjectId = mongoose.Schema.Types.ObjectId; // Datatype para referencias a otros esquemas
 
 const grupoSchema = new mongoose.Schema({
   identificacion: {
     codigoReferencia: {type: String, required: true, trim: true, index: {unique: true}},
     proyectoInvestigacion: {type: String, trim: true},
     pais: {type: String, trim: true},
-    fecha: Date,
+    fecha: {type: Date},
     entidadProductora: {type: String, trim: true},
     investigacion: {type: String, trim: true},
     coordinacionProyecto: {type: String, trim: true},
@@ -32,8 +33,10 @@ const grupoSchema = new mongoose.Schema({
     // fechaActualizacion: updatedAt
   },
   adicional: {
-    imagen: String,
-    isPublic: {type: Boolean, default: true}
+    imagen: {type: String},
+    isPublic: {type: Boolean, default: true},
+    coleccion: {type: ObjectId, ref: 'coleccionVideo'},
+    grupo: {type: ObjectId, ref: 'grupoVideo'},
   }
 },{
   collection: 'grupoDocumentalVideo',
