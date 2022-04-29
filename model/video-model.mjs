@@ -49,7 +49,7 @@ const videoSchema = new mongoose.Schema({
   adicional: {
     imagen: {type: String, trim: true},
     video: {type: String, trim: true},
-    calificacion: {type: String, trim: true},
+    calificacion: {type: String, trim: true}, // documento (PDF) de calificación
     isPublic: {type: Boolean, default: true},
     user: [{type: ObjectId, ref: 'user'}],
     grupo: {type: ObjectId, ref: 'grupoVideo'},
