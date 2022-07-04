@@ -13,38 +13,20 @@ const mongoClient = new MongoClient(url);
 export async function uploadFiles(req, res) {
   try {
     await upload(req, res);
-    console.log("req files",req.files);
-
-    if (req.files.length <= 0) {
-      return res
-        .status(400)
-        .send({ message: "You must select at least 1 file." });
-    }
 
     await mongoClient.connect();
 
-    
     const database = mongoClient.db(_database);
     const files = database.collection(fileBucket);
     
-    console.log("req file to insertion",req.files[0]);
-    files.insertOne(req.files[0]);
+    let jsonBody = {
+      data: req.body.file
+    };
+    files.insertOne(jsonBody);
 
     return res.status(200).send({
       message: "Files have been uploaded.",
     });
-
-    // console.log(req.file);
-
-    // if (req.file == undefined) {
-    //   return res.send({
-    //     message: "You must select a file.",
-    //   });
-    // }
-
-    // return res.send({
-    //   message: "File has been uploaded.",
-    // });
   } catch (error) {
     console.log("Error", error);
 
