@@ -88,10 +88,10 @@ export function remove(req, res){
 export function show(req, res){
   Video.findOne({_id: req.params.id}, (error, video) => {
     if(error){
-      return res.status(500).json({message: error});
+      return res.status(500).json({message: 'Error de petición. URL incorrecta'});
     }
     if(!video){
-      return res.status(400).json({message: error});
+      return res.status(400).json({message: 'Error de la base de datos'});
     }
     return res.status(200).json({video: video, message: "Registro obtenido correctamente"});
   })
