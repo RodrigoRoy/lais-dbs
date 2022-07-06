@@ -2,7 +2,7 @@
   "name": "lais-dbs",
   "version": "1.0.0",
   "description": "Base de datos del LAIS",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "serve": "concurrently \"babel index.js -d dist --watch\" \"nodemon dist/index.js\"",
     "build": "babel index.js -d dist",
